@@ -22,7 +22,12 @@ async function getContacts() {
 
 async function listContacts() {
   try {
+    const start = performance.now();
+
     console.table(await getContacts());
+
+    const end = performance.now();
+    console.log(`Execution time: ${end - start} ms`);
   } catch (error) {
     console.log(error.message);
   }
@@ -30,9 +35,14 @@ async function listContacts() {
 
 async function getContactById(contactId) {
   try {
+    const start = performance.now();
+
     const contacts = await getContacts();
     const contact = contacts.find((contact) => contact.id === contactId);
     console.table([contact], ["id", "name", "email", "phone"]);
+
+    const end = performance.now();
+    console.log(`Execution time: ${end - start} ms`);
   } catch (error) {
     console.log(error.message);
   }
@@ -40,12 +50,17 @@ async function getContactById(contactId) {
 
 async function removeContact(contactId) {
   try {
+    const start = performance.now();
+
     const contacts = await getContacts();
     const updatedContacts = contacts.filter(
       (contact) => contactId !== contact.id
     );
 
     fs.writeFile(contactsPath, JSON.stringify(updatedContacts));
+
+    const end = performance.now();
+    console.log(`Execution time: ${end - start} ms`);
   } catch (error) {
     console.log(error.message);
   }
@@ -53,6 +68,8 @@ async function removeContact(contactId) {
 
 async function addContact(name, email, phone) {
   try {
+    const start = performance.now();
+
     const newContact = {
       id: randomUUID(),
       name: name,
@@ -64,6 +81,9 @@ async function addContact(name, email, phone) {
     contacts.push(newContact);
 
     fs.writeFile(contactsPath, JSON.stringify(contacts));
+
+    const end = performance.now();
+    console.log(`Execution time: ${end - start} ms`);
   } catch (error) {
     console.log(error.message);
   }
